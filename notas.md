@@ -55,6 +55,7 @@ npm install cors --save
  
 ```
 #### Instalación de babel
+Babel es una herramienta que nos permite transformar nuestro código JS de última generación (o con funcionalidades extras) a JS que cualquier navegador o versión de Node.js entienda.
 
 ```javascript
 npm install babel-cli --save
@@ -183,3 +184,65 @@ Ver el fichero `controllers/CategoriaController.js`
 // Este enrutador permite que el middelware devuelva promesas
 npm install express-promise-router --save
 ```
+
+
+### Encriptar contraseña
+
+```javascript
+ npm install bcryptjs --save
+```
+
+
+### Login - usuarios
+
+Dentro del controlador del usuario se añade la función *login*
+En nuestro proyecto, lo guardaremos en la carpeta *services*
+
+Seguridad con token.
+El usuario se loguea. Si es correcto el usuario y la password, el servidor generará un token, que envía al cliente (navegador). Este lo usará para todas las peticiones que haga al servidor, que lo verificará.
+
+```javascript
+npm install jsonwebtoken --save
+ 
+```
+
+### Crear middelware
+
+En la carpeta middelware se crea un fichero denominado `auth.js` que se compone de 4 funciones: 
+
+```
+  verifyUsuario: async (req, res, next) => {},
+  verifyAdministrador: async (req, res, next) => {},
+  verifyAlmacenero: async (req, res, next) => {},
+  verifyVendedor: async (req, res, next) => {},
+
+```
+
+Una vez implementadas las funciones, se utilizará este middelware en el fichero `routes/usurio.js`.
+
+Utilizando el middelware anterior, lo usaremos también para restringir el uso de las rutas de categorías y artículos para usuarios autorizados.
+
+
+ Añadir el modelo Persona
+
+ Añadir el controlador PersonaController
+
+ Añadir `routes/persona.js`.
+
+Añadir el modelo Ingreso;
+Añadir el controlador IngresoController;
+  - añadir función aumentarStock()
+  - añadir función disminuirStock()
+  - añadir el método grafico12meses
+
+Añadir el model Articulo;
+Añadir el controlador ArticuloController;
+  - añadir método queryCodigo -> para buscar por código de barras
+
+
+Añadir modelo venta.js
+Añadir controlador VentaController.js
+  - Añadir el método grafico12meses
+
+
+Última lección Udemy:  sección 11 - 42.

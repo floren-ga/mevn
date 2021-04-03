@@ -3,7 +3,7 @@ import models from "../models/";
 export default {
   add: async (req, res, next) => {
     try {
-      const reg = await models.Categoria.create(req.body);
+      const reg = await models.Persona.create(req.body);
       res.status(200).json(reg);
     } catch (e) {
       res.status(500).send({
@@ -12,9 +12,10 @@ export default {
       next(e);
     }
   },
+
   query: async (req, res, next) => {
     try {
-      const reg = await models.Categoria.findOne({ _id: req.query._id });
+      const reg = await models.Persona.findOne({ _id: req.query._id });
 
       if (!reg) {
         res.status(404).send({
@@ -30,14 +31,15 @@ export default {
       next(e);
     }
   },
+
   list: async (req, res, next) => {
     try {
       let valor = req.query.valor;
-      const reg = await models.Categoria.find(
+      const reg = await models.Persona.find(
         {
           $or: [
             { nombre: new RegExp(valor, "i") },
-            { descripcion: new RegExp(valor, "i") },
+            { email: new RegExp(valor, "i") },
           ],
         },
         { createdAt: 0 }
@@ -52,11 +54,68 @@ export default {
       next(e);
     }
   },
+
+  listClientes: async (req, res, next) => {
+    try {
+      let valor = req.query.valor;
+      const reg = await models.Persona.find(
+        {
+          $or: [
+            { nombre: new RegExp(valor, "i") },
+            { email: new RegExp(valor, "i") },
+          ],
+          tipo_persona: "Cliente",
+        },
+        { createdAt: 0 }
+      ).sort({
+        createdAt: -1,
+      });
+      res.status(200).json(reg);
+    } catch (e) {
+      res.status(500).send({
+        message: "Ocurrió un error.",
+      });
+      next(e);
+    }
+  },
+
+  listProveedores: async (req, res, next) => {
+    try {
+      let valor = req.query.valor;
+      const reg = await models.Persona.find(
+        {
+          $or: [
+            { nombre: new RegExp(valor, "i") },
+            { email: new RegExp(valor, "i") },
+          ],
+          tipo_persona: "Proveedor",
+        },
+        { createdAt: 0 }
+      ).sort({
+        createdAt: -1,
+      });
+      res.status(200).json(reg);
+    } catch (e) {
+      res.status(500).send({
+        message: "Ocurrió un error.",
+      });
+      next(e);
+    }
+  },
+
   update: async (req, res, next) => {
     try {
-      const reg = await models.Categoria.findByIdAndUpdate(
+      const reg = await models.Persona.findByIdAndUpdate(
         { _id: req.body._id },
-        { nombre: req.body.nombre, descripcion: req.body.descripcion }
+        {
+          tipo_persona: req.body.tipo_persona,
+          nombre: req.body.nombre,
+          tipo_documento: req.body.tipo_documento,
+          num_documento: req.body.num_documento,
+          direccion: req.body.direccion,
+          telefono: req.body.telefono,
+          email: req.body.email,
+        }
       );
       res.status(200).json(reg);
     } catch (e) {
@@ -66,9 +125,10 @@ export default {
       next(e);
     }
   },
+
   remove: async (req, res, next) => {
     try {
-      const reg = await models.Categoria.findByIdAndDelete({
+      const reg = await models.Persona.findByIdAndDelete({
         _id: req.body._id,
       });
       res.status(200).json(reg);
@@ -79,9 +139,10 @@ export default {
       next(e);
     }
   },
+
   activate: async (req, res, next) => {
     try {
-      const reg = await models.Categoria.findByIdAndUpdate(
+      const reg = await models.Persona.findByIdAndUpdate(
         { _id: req.body._id },
         { estado: 1 }
       );
@@ -93,9 +154,10 @@ export default {
       next(e);
     }
   },
+
   deactivate: async (req, res, next) => {
     try {
-      const reg = await models.Categoria.findByIdAndUpdate(
+      const reg = await models.Persona.findByIdAndUpdate(
         { _id: req.body._id },
         { estado: 0 }
       );

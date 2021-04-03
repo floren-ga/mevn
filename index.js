@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: true }));
 // rutas
 app.use("/api", router);
 
-// Esta ruta permite saber dónde está la carpeta 'public'
+// Esta instrucción le permite a express saber la ruta a la carpeta 'public'
 app.use(express.static(path.join(__dirname, "public")));
 
 // Asignar puerto dinámicamente por la máquina que ejecute el script
